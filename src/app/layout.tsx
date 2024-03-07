@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: "https://nespods.com/og.png",
+        url: "https://nespods.com/og-cover.png",
         width: 1200,
         height: 630,
         alt: "NesPods",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    images: ["https://nespods.com/og.png"],
+    images: ["https://nespods.com/og-cover.png"],
   },
 };
 
