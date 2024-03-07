@@ -32,7 +32,7 @@ export function FlipCard({ product }: Props) {
 
   return (
     <div
-      className="h-80 w-80 bg-transparent [perspective:1000px]"
+      className="h-[--card-size] aspect-square bg-transparent [perspective:1000px]"
       onClick={handleClick}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}

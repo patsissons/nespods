@@ -8,6 +8,12 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "www.nespresso.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
     dangerouslyAllowSVG: true,
   },
