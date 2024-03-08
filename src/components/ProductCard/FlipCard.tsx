@@ -1,16 +1,18 @@
 "use client";
 
 import { type PropsWithChildren, useState } from "react";
+import { Pod } from "@/lib/data/pods";
 import { cn } from "@/lib/utils";
-import { Product } from "./types";
 import { CardBack } from "./CardBack";
 import { CardFront } from "./CardFront";
+import { Data } from "./types";
 
 interface Props {
-  product: Product;
+  pod: Pod;
+  data: Data;
 }
 
-export function FlipCard({ product }: Props) {
+export function FlipCard({ pod, data }: Props) {
   const [flipped, setFlipped] = useState(false);
   const [hovering, setHovering] = useState(false);
 
@@ -44,10 +46,10 @@ export function FlipCard({ product }: Props) {
         )}
       >
         <CardContentWrapper>
-          <CardFront product={product} />
+          <CardFront pod={pod} data={data} />
         </CardContentWrapper>
         <CardContentWrapper backside>
-          <CardBack product={product} />
+          <CardBack pod={pod} data={data} />
         </CardContentWrapper>
       </div>
     </div>

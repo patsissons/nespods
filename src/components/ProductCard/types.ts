@@ -1,8 +1,4 @@
-export interface Product {
-  title: string;
-  description: string;
-  price: number;
-  image: string;
+export interface Data {
   rating: number;
   ratingCount: number;
 }
