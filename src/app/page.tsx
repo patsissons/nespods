@@ -64,8 +64,11 @@ export default function Home() {
                 acidity: 1,
                 body: 1,
                 roasting: 1,
-                price: Number((Math.random() * 100).toFixed(2)),
-                url: "",
+                availability: {
+                  us: {
+                    price: Number((Math.random() * 100).toFixed(2)),
+                  },
+                },
               }}
               data={{
                 rating: Number((Math.random() * 5).toFixed(1)),

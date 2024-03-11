@@ -8,9 +8,7 @@ export function Rating({ rating, count }: Props) {
 
   return (
     <>
-      <span className="text-sm">{`${"★".repeat(stars)}${"☆".repeat(
-        5 - stars
-      )}`}</span>
+      <span>{`${"★".repeat(stars)}${"☆".repeat(5 - stars)}`}</span>
       <span className="flex gap-1">
         <span>{rating.toFixed(1)}</span>
         <span>{`(${count})`}</span>

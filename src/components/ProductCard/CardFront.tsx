@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Rating } from "./Rating";
-import { Pod } from "@/lib/data/pods";
+import { Pod, PodRegion, PodRegionAvailability } from "@/lib/data/pods";
 import { Data } from "./types";
 
 interface Props {
@@ -9,10 +9,10 @@ interface Props {
 }
 
 export function CardFront({
-  pod: { image, name, description, price },
+  pod: { image, name, description, availability },
   data: { rating, ratingCount },
 }: Props) {
-  // const url = `https://www.nespresso.com/us/en/order/capsules/${line}/${slug}`;
+  const [, { price }, currency] = primaryRegion();
   return (
     <div className="flex flex-col h-full bg-primary-foreground">
       <div className="h-44 bg-neutral-300">
@@ -30,11 +30,25 @@ export function CardFront({
         <div className="flex-1">
           <p className="text-sm text-neutral-500 line-clamp-2">{description}</p>
         </div>
-        <div className="flex justify-between gap-1 text-xl text-right leading-none text-neutral-700">
-          <p className="font-mono">{`$${price.toFixed(2)}`}</p>
+        <div className="flex justify-between gap-1 text-sm text-right leading-none text-neutral-700">
+          <p className="font-mono">{`${currency} $${price.toFixed(2)}`}</p>
           <Rating rating={rating} count={ratingCount} />
         </div>
       </div>
     </div>
   );
+
+  function primaryRegion():
+    | [PodRegion, PodRegionAvailability]
+    | [PodRegion, PodRegionAvailability, string] {
+    if ("us" in availability && availability.us)
+      return ["us", availability.us, "USD"];
+    if ("ca" in availability && availability.ca)
+      return ["ca", availability.ca, "CAD"];
+    if ("hk" in availability && availability.hk)
+      return ["hk", availability.hk, "HKD"];
+
+    const region = Object.keys(availability)[0] as PodRegion;
+    return [region, availability[region] as PodRegionAvailability];
+  }
 }

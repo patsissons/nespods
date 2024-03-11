@@ -1,11 +1,21 @@
 type PodLine = "original" | "vertuo";
-type PodType = "Alto XL" | "Double espresso" | "Espresso";
+type PodType = "Alto XL" | "Double espresso" | "Espresso" | "Gran Lungo";
 type PodLabel = "Limited Edition" | "Next Pop";
 type PodProfile =
   | "Cereal, roasted"
   | "Full bodied and creamy"
   | "Honeyed & delicate"
+  | "Roasted & woody"
+  | "Woody & flowery"
   | "Woody & spicy";
+export type PodRegion = "us" | "ca" | "hk";
+
+export interface PodRegionAvailability {
+  price: number;
+  // default to
+  // - `https://www.nespresso.com/${region}/en/order/capsules/${line}/${slug}`
+  url?: string;
+}
 
 export interface Pod {
   slug: string;
@@ -13,6 +23,7 @@ export interface Pod {
   description: string;
   line: PodLine;
   type: PodType;
+  nextPop?: boolean;
   labels?: PodLabel[];
   profile: PodProfile;
   weight: number;
@@ -23,14 +34,12 @@ export interface Pod {
   roasting: number;
   caffeine?: number;
   oz?: number;
-  price: number;
   year?: number;
   discontinued?: boolean;
   notes?: string;
   image?: string;
-  // default to `https://www.nespresso.com/us/en/order/capsules/${line}/${slug}`
-  url?: string;
   review?: string;
+  availability: Partial<Record<PodRegion, PodRegionAvailability>>;
 }
 
 // source of data from this spreadsheet:
@@ -52,8 +61,12 @@ export const pods: Pod[] = [
     body: 3,
     roasting: 4,
     oz: 2.7,
-    price: 12,
     image: "/img/pods/aged-sumatra-vertuo-coffee-pods.avif",
+    availability: {
+      us: {
+        price: 12,
+      },
+    },
   },
   {
     slug: "altissio-vertuo-espresso-pods",
@@ -71,8 +84,12 @@ export const pods: Pod[] = [
     roasting: 3,
     caffeine: 108,
     oz: 1.35,
-    price: 9.8,
     image: "/img/pods/altissio-vertuo-espresso-pods.webp",
+    availability: {
+      us: {
+        price: 9.8,
+      },
+    },
   },
   {
     slug: "altissio-decaffeinato-coffee-pods",
@@ -90,8 +107,12 @@ export const pods: Pod[] = [
     roasting: 3,
     caffeine: 4,
     oz: 1.35,
-    price: 10.5,
     image: "/img/pods/altissio-decaffeinato-coffee-pods.avif",
+    availability: {
+      us: {
+        price: 10.5,
+      },
+    },
   },
   {
     slug: "alto-ambrato",
@@ -100,6 +121,7 @@ export const pods: Pod[] = [
       "Ambrato is a delicate blend with light toasted bread and honey notes and a light body.",
     line: "vertuo",
     type: "Alto XL",
+    nextPop: true,
     profile: "Honeyed & delicate",
     weight: 17.1,
     intensity: 7,
@@ -109,10 +131,79 @@ export const pods: Pod[] = [
     roasting: 2,
     caffeine: 170,
     oz: 12,
-    price: 11.52,
-    url: "https://www.nespresso.com/hk/en/order/capsules/vertuo/alto-ambrato",
     image: "/img/pods/alto-ambrato.avif",
+    availability: {
+      hk: {
+        price: 67,
+      },
+    },
   },
+  {
+    slug: "alto-onice",
+    name: "Alto Onice",
+    description: "An intense coffee with roasted, woody and spicy notes.",
+    line: "vertuo",
+    type: "Alto XL",
+    nextPop: true,
+    profile: "Roasted & woody",
+    weight: 17.1,
+    intensity: 4,
+    bitterness: 3,
+    acidity: 1,
+    body: 3,
+    roasting: 3,
+    caffeine: 190,
+    oz: 12,
+    image: "/img/pods/alto-onice.png",
+    availability: {
+      hk: {
+        price: 67,
+      },
+    },
+  },
+  {
+    slug: "ethiopia-vertuo-coffee-pods",
+    name: "Ethiopia",
+    description:
+      "Ethiopia is a naturally flowery coffee that gains fruitiness and complexity from its signature drying method, revealing ripe blueberry notes and a hint of musk.",
+    line: "vertuo",
+    type: "Gran Lungo",
+    profile: "Woody & flowery",
+    weight: 10,
+    intensity: 6,
+    bitterness: 4,
+    acidity: 2,
+    body: 4,
+    roasting: 4,
+    caffeine: 135,
+    oz: 5,
+    notes: "Reviving Origins",
+    image: "/img/pods/ethiopia-vertuo-coffee-pods.png",
+    availability: {
+      us: {
+        price: 12,
+      },
+    },
+  },
+  // {
+  //   slug: "",
+  //   name: "",
+  //   description: "",
+  //   line: "vertuo",
+  //   type: "",
+  //   profile: "",
+  //   weight: 0,
+  //   intensity: 0,
+  //   bitterness: 0,
+  //   acidity: 0,
+  //   body: 0,
+  //   roasting: 0,
+  //   caffeine: 0,
+  //   oz: 0,
+  //   price: 0,
+  //   url: "",
+  //   image: "",
+  // }
 ];
 
 // export const podsBySlug = Object.fromEntries(
