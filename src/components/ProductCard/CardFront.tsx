@@ -1,28 +1,35 @@
 import Image from "next/image";
 import { Rating } from "./Rating";
-import { Pod } from "@/lib/data/pods";
-import { Data } from "./types";
+import { Pod, PodRegion, PodRegionAvailability } from "@/lib/data/pods";
+import type { CardData } from "./types";
+import { useState } from "react";
 
 interface Props {
   pod: Pod;
-  data: Data;
+  data?: CardData;
 }
 
 export function CardFront({
-  pod: { image, name, description, price },
-  data: { rating, ratingCount },
+  pod: { slug, image, name, description, availability },
+  data,
 }: Props) {
-  // const url = `https://www.nespresso.com/us/en/order/capsules/${line}/${slug}`;
+  const [displayImage, setDisplayImage] = useState(
+    image || `/img/pods/${slug}.png`
+  );
+  const [, { price }, currency = ""] = primaryRegion();
   return (
     <div className="flex flex-col h-full bg-primary-foreground">
       <div className="h-44 bg-neutral-300">
         <Image
           className="object-contain w-full h-full"
-          src={image || "/img/sample.avif"}
+          src={displayImage}
           alt={name}
           width={320}
           height={320}
           loading="lazy"
+          onError={() => {
+            setDisplayImage("/img/default-pod.avif");
+          }}
         />
       </div>
       <div className="flex-1 flex flex-col gap-1 p-2">
@@ -30,11 +37,29 @@ export function CardFront({
         <div className="flex-1">
           <p className="text-sm text-neutral-500 line-clamp-2">{description}</p>
         </div>
-        <div className="flex justify-between gap-1 text-xl text-right leading-none text-neutral-700">
-          <p className="font-mono">{`$${price.toFixed(2)}`}</p>
-          <Rating rating={rating} count={ratingCount} />
+        <div className="flex justify-between gap-1 text-sm text-right leading-none text-neutral-700">
+          <p className="font-mono">{`${currency} $${price.toFixed(2)}`}</p>
+          {data && <Rating rating={data.rating} count={data.ratingCount} />}
         </div>
       </div>
     </div>
   );
+
+  function primaryRegion():
+    | [PodRegion, PodRegionAvailability]
+    | [PodRegion, PodRegionAvailability, string] {
+    if ("us" in availability && availability.us)
+      return ["us", availability.us, "USD"];
+    if ("ca" in availability && availability.ca)
+      return ["ca", availability.ca, "CAD"];
+    if ("au" in availability && availability.au)
+      return ["au", availability.au, "AUD"];
+    if ("hk" in availability && availability.hk)
+      return ["hk", availability.hk, "HKD"];
+    if ("tw" in availability && availability.tw)
+      return ["tw", availability.tw, "NT"];
+
+    const region = Object.keys(availability)[0] as PodRegion;
+    return [region, availability[region] as PodRegionAvailability];
+  }
 }

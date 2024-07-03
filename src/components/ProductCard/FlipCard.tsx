@@ -5,11 +5,11 @@ import { Pod } from "@/lib/data/pods";
 import { cn } from "@/lib/utils";
 import { CardBack } from "./CardBack";
 import { CardFront } from "./CardFront";
-import { Data } from "./types";
+import { CardData } from "./types";
 
 interface Props {
   pod: Pod;
-  data: Data;
+  data?: CardData;
 }
 
 export function FlipCard({ pod, data }: Props) {

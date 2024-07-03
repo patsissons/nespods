@@ -1,10 +1,10 @@
 import { Pod } from "@/lib/data/pods";
 import { FlipCard } from "./FlipCard";
-import { Data } from "./types";
+import { CardData } from "./types";
 
 interface Props {
   pod: Pod;
-  data: Data;
+  data?: CardData;
 }
 
 export function ProductCard({ pod, data }: Props) {

@@ -1,4 +1,4 @@
-export interface Data {
+export interface CardData {
   rating: number;
   ratingCount: number;
 }
